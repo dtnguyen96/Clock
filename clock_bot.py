@@ -1,5 +1,6 @@
 from selenium import webdriver
 from time import sleep
+from selenium.webdriver.support.ui import Select
 class clockBot():
     def __init__(self):
         self.driver=webdriver.Chrome()
@@ -21,11 +22,34 @@ class clockBot():
         #you need to switch window before search for the time icon
         window_after=self.driver.window_handles[1]
         self.driver.switch_to.window(window_after)
-        time_icon=bot.driver.find_element_by_xpath('//*[@id="win0divPTNUI_LAND_REC_GROUPLET$0"]')
+        #Click on time icon
+        time_icon=self.driver.find_element_by_xpath('//*[@id="win0divPTNUI_LAND_REC_GROUPLET$0"]')
         time_icon.click()
 
     def clock_in(self):
+        sleep(3)
+        #encounter dropdown value, need to use Selenium Select class 
+        #Find the dropdown element using Select class 
+        select=Select(self.driver.find_element_by_xpath('//*[@id="TL_RPTD_TIME_PUNCH_TYPE$0"]'))
+        #Punch In value
+        select.select_by_visible_text('In')
+        #Click submit -- need to test this 
+        submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
+        submit_btn.click()
+
+        
+    def clock_out(self):
+        sleep(3)
+        select=Select(bot.driver.find_element_by_xpath('//*[@id="TL_RPTD_TIME_PUNCH_TYPE$0"]'))
+        select.select_by_visible_text('Out')
+        #Click submit -- need to test this 
+        submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
+        submit_btn.click()
+
         
 bot = clockBot()
 bot.login()
 bot.get_to_punching_site()
+bot.clock_in()
+bot.clock_out()
+#Now that the interations are finished, need to set up a schedule for the bot to run
