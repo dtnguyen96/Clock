@@ -1,6 +1,7 @@
 from selenium import webdriver
 from time import sleep
 from selenium.webdriver.support.ui import Select
+import schedule
 class clockBot():
     def __init__(self):
         self.driver=webdriver.Chrome()
@@ -26,30 +27,41 @@ class clockBot():
         time_icon=self.driver.find_element_by_xpath('//*[@id="win0divPTNUI_LAND_REC_GROUPLET$0"]')
         time_icon.click()
 
-    def clock_in(self):
+    def punch_in(self):
         sleep(3)
         #encounter dropdown value, need to use Selenium Select class 
         #Find the dropdown element using Select class 
         select=Select(self.driver.find_element_by_xpath('//*[@id="TL_RPTD_TIME_PUNCH_TYPE$0"]'))
-        #Punch In value
+        #Punch "In" 
         select.select_by_visible_text('In')
-        #Click submit -- need to test this 
-        submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
-        submit_btn.click()
-
-        
-    def clock_out(self):
+        #Click submit 
+        #submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
+        #submit_btn.click()
+    def punch_out(self):
         sleep(3)
-        select=Select(bot.driver.find_element_by_xpath('//*[@id="TL_RPTD_TIME_PUNCH_TYPE$0"]'))
+        select=Select(self.driver.find_element_by_xpath('//*[@id="TL_RPTD_TIME_PUNCH_TYPE$0"]'))
+        #Punch "Out"
         select.select_by_visible_text('Out')
         #Click submit -- need to test this 
         submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
         submit_btn.click()
+    def close_window(self):
+        sleep(3)
+        self.driver.quit()
 
-        
-bot = clockBot()
-bot.login()
-bot.get_to_punching_site()
-bot.clock_in()
-bot.clock_out()
+def clock_in():
+    bot_in = clockBot()
+    bot_in.login()
+    bot_in.get_to_punching_site()
+    bot_in.punch_in()
+    bot_in.close_window()
+def clock_out():
+    bot_out=clockBot()
+    bot_out.login()
+    bot_out.get_to_punching_site()
+    bot_out.punch_out()
+    bot_out.close_window()
+#Shedule to Clock In every day at 10:00 AM login -> get_to_punching_site -> clock in -> close site
+#schedule.every().minute.at(":30").do(clock_in)
+
 #Now that the interations are finished, need to set up a schedule for the bot to run
