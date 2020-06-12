@@ -12,10 +12,11 @@ class clockBot():
         pass_in.send_keys('Dethuong11@')
         login_btn.click()
     def clockIn(self):
-        hr_icon=bot.driver.find_element_by_xpath('//*[@id="portal_area"]/div[2]/div/div[2]/div[4]/a/div[1]/img')
+        #wait for page to load 
+        sleep(3)
+        hr_icon=self.driver.find_element_by_xpath('//*[@id="portal_area"]/div[2]/div/div[2]/div[4]/a/div[1]/img')
         hr_icon.click()
-        sleep(5)
+        
 bot = clockBot()
 bot.login()
 bot.clockIn()
-das dA
