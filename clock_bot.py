@@ -43,25 +43,29 @@ class clockBot():
         #Punch "Out"
         select.select_by_visible_text('Out')
         #Click submit -- need to test this 
-        submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
-        submit_btn.click()
+        #submit_btn=self.driver.find_element_by_xpath('//*[@id="TL_WEB_CLOCK_WK_TL_SAVE_PB"]')
+        #submit_btn.click()
     def close_window(self):
         sleep(3)
         self.driver.quit()
-
+#To clock In: login -> get_to_punching_site -> clock in -> close site
 def clock_in():
     bot_in = clockBot()
     bot_in.login()
     bot_in.get_to_punching_site()
     bot_in.punch_in()
     bot_in.close_window()
+#To Clock Out: login -> get_to_punching_site -> clock out -> close site
 def clock_out():
     bot_out=clockBot()
     bot_out.login()
     bot_out.get_to_punching_site()
     bot_out.punch_out()
     bot_out.close_window()
-#Shedule to Clock In every day at 10:00 AM login -> get_to_punching_site -> clock in -> close site
-#schedule.every().minute.at(":30").do(clock_in)
-
+#Schedule to clock In every day at 10:00 AM
+schedule.every().minute.at(":15").do(clock_in)
+#Schedule to clock Out every day at 2:00 PM 
+schedule.every().minute.at(":30").do(clock_out)
+#while True:
+    #schedule.run_pending()
 #Now that the interations are finished, need to set up a schedule for the bot to run
