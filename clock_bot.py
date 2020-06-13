@@ -2,6 +2,7 @@ from selenium import webdriver
 from time import sleep
 from selenium.webdriver.support.ui import Select
 import schedule
+import datetime
 class clockBot():
     def __init__(self):
         self.driver=webdriver.Chrome()
@@ -48,24 +49,37 @@ class clockBot():
     def close_window(self):
         sleep(3)
         self.driver.quit()
+#array of weekend in the form of datetime.weekday()
+weekend=[5,6]
 #To clock In: login -> get_to_punching_site -> clock in -> close site
-def clock_in():
+def clock_in(executing_time):
+    #If it's the weekend, return None
+    if datetime.datetime.today().weekday() in weekend :
+        print("Stop running jobs. It's the weekend")
+        return None
+
     bot_in = clockBot()
     bot_in.login()
     bot_in.get_to_punching_site()
     bot_in.punch_in()
     bot_in.close_window()
 #To Clock Out: login -> get_to_punching_site -> clock out -> close site
-def clock_out():
+def clock_out(executing_time):
+    #If it's the weekend, return None
+    if datetime.datetime.today().weekday() in weekend :
+        print("Stop running jobs. It's the weekend")
+        return None
+
     bot_out=clockBot()
     bot_out.login()
     bot_out.get_to_punching_site()
     bot_out.punch_out()
     bot_out.close_window()
-#Schedule to clock In every day at 10:00 AM
-schedule.every().minute.at(":15").do(clock_in)
+#Schedule to clock In every day (except the weekend) at 10:00 AM
+schedule.every().minute.at(":10").do(clock_in)
 #Schedule to clock Out every day at 2:00 PM 
-schedule.every().minute.at(":30").do(clock_out)
-#while True:
-    #schedule.run_pending()
+schedule.every().minute.at(":35").do(clock_out)
+while True:
+    schedule.run_pending()
+    sleep(1)
 #Now that the interations are finished, need to set up a schedule for the bot to run
