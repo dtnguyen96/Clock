@@ -11,8 +11,8 @@ class clockBot():
         cougarnet_in=self.driver.find_element_by_xpath('//*[@id="param1"]')
         pass_in=self.driver.find_element_by_xpath('//*[@id="param2"]')
         login_btn=self.driver.find_element_by_xpath('//*[@id="cougarnet-login"]/i/input')
-        cougarnet_in.send_keys('dtngu212')
-        pass_in.send_keys('Dethuong11@')
+        cougarnet_in.send_keys('username')
+        pass_in.send_keys('password')
         login_btn.click()
     def get_to_punching_site(self):
         #wait for page to load 
